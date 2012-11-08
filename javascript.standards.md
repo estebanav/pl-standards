@@ -3,7 +3,7 @@
 #{Js Basic Styles}
 =====================================
 
-The aim of this repository is to provide a common set of guidelines to stablish  a standard way of coding to Presentation Layers Developers and good practises.
+The aim of this repository is to provide a common set of guidelines to stablish  a standard way of coding to Presentation Layers Developers and good practices.
 
 
 
@@ -280,6 +280,122 @@ try {
 ```
 
 
+
+###Good Practices in JavaScript
+
+
+###Loose Coupling between JS, CSS & HTML
+
+Get a low level of dependency between JS , CSS and HTML layers. 
+	
+	>Don't use css expression() into the CSS.
+	>Try to keep  out the css properties from the javascript code. 
+	>To change css properties from javascript, prefer  to assign or remove CSS classes, defined into CSS files.
+	>Don't  embed javascript into HTML tags. 
+
+
+###Avoid Globals
+
+1) Pass external variables required for a function, like arguments. So its value won't depends of global assignments but it'll depends on the value assigned to the parameter.
+
+2)Declare variables into body function, and using always the "var" statement .
+
+3) Into new code,  is better use strict mode to avoid global variables and other programming errors.
+
+4) Set only 1 single global using Namespaces:
+
+```javascript
+var JS = {};
+
+JS.some = function(title) {
+    this.title = title;
+    this.page = 1;
+};
+
+JS.some.prototype.myMethod = function(param) {
+    this.attribute += param;
+};
+JS.some.otherThing = new JS.some("bla bla bla");
+```
+
+###Cache length in loops
+
+Store the length's array in a variable before the loop.
+
+Good:
+```javascript
+var l = array.length;
+for(var i=0; i<=l; i++){
+    //do something
+}
+```
+Bad:
+```javascript
+for(var i=0; i<=array.length; i++){
+
+}
+```
+
+###Append new elements outside of a loop
+
+Adding elements to the DOM has a cost. Do it once, not once at each iteration.
+
+Bad:
+
+```javascript
+$.each(array, function(){
+    //do something and...
+    $('.list').append(newElement);
+})
+```
+
+##Jquery Good Practices
+
+Good:
+```javascript
+$.each(array, function(){
+    //do something and...
+   html += '<li>' + value + '</li>';
+})
+$('.list').html(html);
+```
+
+###Optimize selectors
+
+Good:
+```javascript
+$('#some div.class')  //starting with ID. It's faster.
+```
+
+Best:
+```javascript
+$('#some ').find(' div.class')
+```
+
+ Good:
+```javascript
+$('-specifity > +specificity')  Example: $('.titles td.first')  -> $([tag or class] [tag.class])
+```
+
+Bad:
+```javascript
+$('.data table tr td.red .income') //too much specificity!
+```
+
+Bad:
+```javascript
+$('.buttons > *')  //no universal selector!
+```
+
+###Use delegate and live
+
+```javascript
+$(context-holder).delegate('elements', 'event', callback);
+
+$(element).live('event', callback);
+```
+
+They work faster and allow add new elements without re bind event handlers.
 
 
 
